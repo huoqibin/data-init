@@ -1,0 +1,28 @@
+package org.crazyit.act.c10;
+
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
+
+public class VacationDeploy {
+
+    public static void main(String[] args) {
+        ProcessEngine engine = ProcessEngines.getDefaultProcessEngine();
+        // 存储服务
+        RepositoryService repositoryService = engine.getRepositoryService();
+        //部署请假流程文件
+        Deployment deployment = repositoryService.createDeployment().addClasspathResource("Vacation.bpmn").deploy();
+//        ProcessDefinition pd = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult();
+//        repositoryService.addCandidateStarterGroup(pd.getId(), "empGroup");
+        //部署报销流程文件
+        deployment = repositoryService.createDeployment().addClasspathResource("ExpenseAccount.bpmn").deploy();
+        //部署调薪流程文件
+        deployment = repositoryService.createDeployment().addClasspathResource("CountSalary.bpmn").deploy();
+        deployment = repositoryService.createDeployment().addClasspathResource("SalaryAdjust.bpmn").deploy();
+
+        System.out.println("流程文件部署成功！");
+    }
+
+}
